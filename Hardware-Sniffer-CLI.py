@@ -23,7 +23,7 @@ def main():
         parser.print_help()
         return EXIT_INVALID_ARGS
 
-    if os_name != "Windows":
+    if os_name not in ["Windows", "Linux"]:
         print(f"Unsupported operating system: {os_name}", file=sys.stderr)
         return EXIT_UNSUPPORTED_OS
 

@@ -25,6 +25,9 @@ class HardwareSniffer:
         if os_name == "Windows":
             from Scripts.platforms.windows import WindowsHardwareInfo
             self.hardware_info = WindowsHardwareInfo(rich_format=rich_format)
+        elif os_name == "Linux":
+            from Scripts.platforms.linux import LinuxHardwareInfo
+            self.hardware_info = LinuxHardwareInfo(rich_format=rich_format)
         else:
             raise NotImplementedError(f"Unsupported operating system: {os_name}")
 
@@ -215,6 +218,30 @@ class HardwareSniffer:
                     os.rename(os.path.join(acpi_dir, path), os.path.join(acpi_dir, path[:-4] + ".aml"))
                 except Exception as e:
                     print(" - {} -> {} failed: {}".format(os.path.basename(path), os.path.basename(path)[:-4] + ".aml", e))
+        elif os_name == "Linux":
+            print("Dumping tables to {}...".format(acpi_dir))
+            
+            # On Linux, ACPI tables are available in /sys/firmware/acpi/tables/
+            import glob
+            acpi_tables_path = "/sys/firmware/acpi/tables/"
+            
+            if os.path.exists(acpi_tables_path):
+                try:
+                    for table_file in glob.glob(os.path.join(acpi_tables_path, "*")):
+                        if os.path.isfile(table_file):
+                            table_name = os.path.basename(table_file)
+                            dest_path = os.path.join(acpi_dir, table_name + ".aml")
+                            shutil.copy2(table_file, dest_path)
+                    print("ACPI tables copied from {}".format(acpi_tables_path))
+                except PermissionError:
+                    print("Permission denied. Try running with sudo to dump ACPI tables.")
+                    return
+                except Exception as e:
+                    print(" - Error copying ACPI tables: {}".format(e))
+                    return
+            else:
+                print("ACPI tables not found at {}".format(acpi_tables_path))
+                return
 
         print("")
         print("ACPI tables dumped successfully.")

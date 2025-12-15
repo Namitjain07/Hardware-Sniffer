@@ -37,7 +37,9 @@
 ## ✨ **Features**
 
 - **Comprehensive Hardware Collection**: 
-  - Extracts information about your motherboard, CPU, GPU, monitor, network adapters, audio devices, USB controllers, input devices, storage controllers, biometric sensors, Bluetooth, SD controllers, and system devices using the WMI command-line (WMIC) utility.
+  - Extracts information about your motherboard, CPU, GPU, monitor, network adapters, audio devices, USB controllers, input devices, storage controllers, biometric sensors, Bluetooth, SD controllers, and system devices.
+  - **Windows**: Uses WMI (Windows Management Instrumentation) for detailed hardware detection
+  - **Linux**: Uses system tools like `lspci`, `lsusb`, `/proc`, and `/sys` for hardware information
   
 - **Innovative Detection Techniques**:
   - 📌 **Motherboard Chipset Identification**: Uses PCI Device details for accurate Intel chipset recognition.
@@ -49,9 +51,11 @@
 
 - **Support for macOS and Linux?**
   - **macOS**: ❌ No. Due to potential inaccuracies caused by Hackintosh modifications, we cannot guarantee accurate information.
-  - **Linux**: 🔄 Work in progress in branch [add-linux-support](https://github.com/lzhoang2801/Hardware-Sniffer/tree/add-linux-support)
+  - **Linux**: ✅ Yes! Linux support has been added and is now fully functional.
 
 ## 🚀 **How To Use**
+
+### Windows
 
 1. **Download**: Head to the [Releases](https://github.com/lzhoang2801/Hardware-Sniffer/releases) tab of Hardware Sniffer and download the latest version.
    
@@ -73,6 +77,35 @@
 5. **Results**: Your output will be saved in the `Results` folder in the program's directory.
 
    ![Results](https://i.imgur.com/gxV4aLL.png)
+
+### Linux
+
+1. **Clone or Download**: Clone the repository or download the source code
+   ```bash
+   git clone https://github.com/lzhoang2801/Hardware-Sniffer.git
+   cd Hardware-Sniffer
+   ```
+
+2. **Install Dependencies**: Install required Python packages
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the CLI**: Execute the command-line interface
+   ```bash
+   # For interactive mode
+   python HardwareSniffer.py
+   
+   # For CLI mode (export report directly)
+   python Hardware-Sniffer-CLI.py -e
+   ```
+
+4. **ACPI Tables (Optional)**: To dump ACPI tables on Linux, you may need to run with sudo:
+   ```bash
+   sudo python Hardware-Sniffer-CLI.py -e
+   ```
+
+5. **Results**: Your output will be saved in the `SysReport` folder (or custom directory specified with `-o`).
 
 ## 🤝 **Contributing**
 
